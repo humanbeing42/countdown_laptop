@@ -1,1 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laptop Countdown</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #171a21;
+      --text: #f5f7fb;
+      --muted: #98a2b3;
+      --accent: #7c5cff;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(124,92,255,0.18), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 850px;
+      text-align: center;
+    }
+
+    .card {
+      background: rgba(23, 26, 33, 0.92);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 36px 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 1.05;
+    }
+
+    p {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .timer {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(90px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .unit {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 18px 10px;
+    }
+
+    .value {
+      display: block;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .label {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .done {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #c7b8ff;
+      margin-top: 18px;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 640px) {
+      .timer {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Countdown to Laptop Day</h1>
+      <p id="targetText">Waiting for Saturday...</p>
+
+      <div class="timer" id="timer">
+        <div class="unit">
+          <span class="value" id="days">00</span>
+          <span class="label">Days</span>
+        </div>
+        <div class="unit">
+          <span class="value" id="hours">00</span>
+          <span class="label">Hours</span>
+        </div>
+        <div class="unit">
+          <span class="value" id="minutes">00</span>
+          <span class="label">Minutes</span>
+        </div>
+        <div class="unit">
+          <span class="value" id="seconds">00</span>
+          <span class="label">Seconds</span>
+        </div>
+      </div>
+
+      <div class="done" id="doneMessage" style="display:none;">
+        It’s laptop time.
+      </div>
+
+      <div class="footer">
+        Live countdown for your brother
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set your target date/time here.
+    // Example: Saturday at 12:00 PM India time.
+    const targetDate = new Date("2026-04-18T12:00:00+05:30");
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+    const doneMessageEl = document.getElementById("doneMessage");
+    const timerEl = document.getElementById("timer");
+    const targetTextEl = document.getElementById("targetText");
+
+    targetTextEl.textContent =
+      "Counting down to Saturday, 18 April 2026, 12:00 PM";
+
+    function pad(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        timerEl.style.display = "none";
+        doneMessageEl.style.display = "block";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      daysEl.textContent = pad(days);
+      hoursEl.textContent = pad(hours);
+      minutesEl.textContent = pad(minutes);
+      secondsEl.textContent = pad(seconds);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
