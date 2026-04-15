@@ -3,112 +3,231 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Laptop Countdown</title>
+  <title>Countdown to Dhamakedaar Zindagi</title>
   <style>
     :root {
-      --bg: #0f1115;
-      --card: #171a21;
-      --text: #f5f7fb;
-      --muted: #98a2b3;
-      --accent: #7c5cff;
+      --bg-1: #0b1020;
+      --bg-2: #15162c;
+      --card: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent-1: #8b5cf6;
+      --accent-2: #ec4899;
+      --accent-3: #22d3ee;
+      --shadow: rgba(0, 0, 0, 0.35);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(124,92,255,0.18), transparent 30%),
-        var(--bg);
+      font-family: Inter, Arial, sans-serif;
       color: var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.35), transparent 28%),
+        radial-gradient(circle at 80% 30%, rgba(236, 72, 153, 0.25), transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(34, 211, 238, 0.18), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
+      overflow: hidden;
+    }
+
+    .glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06), transparent 18%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.05), transparent 18%);
+      filter: blur(20px);
     }
 
     .wrap {
       width: 100%;
-      max-width: 850px;
-      text-align: center;
+      max-width: 980px;
+      position: relative;
+      z-index: 1;
     }
 
     .card {
-      background: rgba(23, 26, 33, 0.92);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 36px 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 48px 28px 28px;
+      text-align: center;
+      box-shadow: 0 30px 80px var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      margin-bottom: 18px;
     }
 
     h1 {
-      margin: 0 0 10px;
-      font-size: clamp(2rem, 6vw, 4rem);
-      line-height: 1.05;
+      margin: 0;
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(90deg, #ffffff, #d8b4fe, #f9a8d4, #a5f3fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    p {
-      margin: 0 0 28px;
+    .subtitle {
+      margin: 16px auto 0;
+      max-width: 680px;
       color: var(--muted);
       font-size: 1.05rem;
+      line-height: 1.6;
     }
 
     .timer {
+      margin-top: 34px;
       display: grid;
-      grid-template-columns: repeat(4, minmax(90px, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
 
     .unit {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 18px;
-      padding: 18px 10px;
+      position: relative;
+      padding: 24px 14px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .unit::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
     }
 
     .value {
       display: block;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255,255,255,0.08);
     }
 
     .label {
       display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 0.9rem;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      color: var(--muted);
     }
 
     .done {
-      font-size: 1.4rem;
+      display: none;
+      margin-top: 28px;
+      font-size: 1.5rem;
       font-weight: 700;
-      color: #c7b8ff;
-      margin-top: 18px;
+      color: #fde68a;
     }
 
     .footer {
-      margin-top: 18px;
+      margin-top: 26px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
     }
 
-    @media (max-width: 640px) {
+    .spark {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.75);
+      box-shadow: 0 0 20px rgba(255,255,255,0.65);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .spark.s1 { top: 10%; left: 8%; animation-delay: 0s; }
+    .spark.s2 { top: 18%; right: 10%; animation-delay: 1s; }
+    .spark.s3 { bottom: 14%; left: 14%; animation-delay: 2s; }
+    .spark.s4 { bottom: 8%; right: 18%; animation-delay: 3s; }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translateY(-16px) scale(1.25);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .card {
+        padding: 36px 18px 22px;
+        border-radius: 24px;
+      }
+
       .timer {
         grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .timer {
+        gap: 12px;
+      }
+
+      .unit {
+        padding: 18px 10px;
+        border-radius: 20px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="glow"></div>
+
   <div class="wrap">
     <div class="card">
-      <h1>Countdown to Laptop Day</h1>
-      <p id="targetText">Waiting for Saturday...</p>
+      <div class="spark s1"></div>
+      <div class="spark s2"></div>
+      <div class="spark s3"></div>
+      <div class="spark s4"></div>
+
+      <div class="badge">Laptop Arrival Timer</div>
+      <h1>Countdown to Dhamakedaar Zindagi</h1>
+      <p class="subtitle" id="targetText">
+        Counting down to the big laptop moment.
+      </p>
 
       <div class="timer" id="timer">
         <div class="unit">
@@ -129,20 +248,18 @@
         </div>
       </div>
 
-      <div class="done" id="doneMessage" style="display:none;">
-        It’s laptop time.
+      <div class="done" id="doneMessage">
+        It’s laptop time. Dhamaka begins.
       </div>
 
       <div class="footer">
-        Live countdown for your brother
+        Live countdown for the new laptop
       </div>
     </div>
   </div>
 
   <script>
-    // Set your target date/time here.
-    // Example: Saturday at 12:00 PM India time.
-    const targetDate = new Date("2026-04-18T12:00:00+05:30");
+    const targetDate = new Date("2026-04-18T11:52:01+05:30");
 
     const daysEl = document.getElementById("days");
     const hoursEl = document.getElementById("hours");
@@ -153,7 +270,7 @@
     const targetTextEl = document.getElementById("targetText");
 
     targetTextEl.textContent =
-      "Counting down to Saturday, 18 April 2026, 12:00 PM";
+      "Counting down to Saturday, 18 April 2026, 11:52:01 AM";
 
     function pad(n) {
       return String(n).padStart(2, "0");
